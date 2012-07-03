@@ -26,8 +26,8 @@ def parse_args():
 	'''
 
 	parser = optparse.OptionParser( usage )
-
-	parser.add_option('-c','--coop-station-id',action='store',type='int',\
+	# COOP ids are strings
+	parser.add_option('-c','--coop-station-id',action='store',type='string',\
 	metavar='NUMSTA',help='Required: COOP Station number')
 
 	parser.add_option('-s','--start-date',action='store',type='string',\
@@ -67,7 +67,7 @@ def parse_args():
 		try python sodrun.py --help for usage'
 		sys.exit(0)
 
-	if len(str(abs(opts.coop_station_id))) != 6 or not isinstance(opts.coop_station_id, int):
+	if len(opts.coop_station_id) != 6 or not opts.coop_station_id.isdigit():
 		print >> sys.stderr, 'Invalid --coop_station_id, needs to be 6 digit number'
 		sys.exit(0)
 
@@ -108,6 +108,8 @@ def StnData(params) :
 #Function utilized to check for gap in data
 ###########################################
 def JulDay(year, mon, day):
+	# This function needs explanation, or perhaps replace with
+	# something from the stdlib.
 	jd = 367 * year - 7 * (year + (mon + 9) / 12) / 4\
 	- 3 * ((year + (mon - 9) / 7) / 100 +1) / 4\
 	+ 275 * mon / 9 + day + 1721029
